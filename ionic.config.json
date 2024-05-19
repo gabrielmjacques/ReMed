@@ -1,0 +1,7 @@
+{
+  "name": "Remed",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
