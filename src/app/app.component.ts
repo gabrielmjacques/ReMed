@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  constructor() { this.initializeApp(); }
+
+  initializeApp() {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    document.documentElement.classList.toggle('ion-palette-dark', prefersDark.matches);
+  }
 }

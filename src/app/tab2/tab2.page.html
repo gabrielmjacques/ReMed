@@ -1,17 +1,60 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 2
+      Histórico
     </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
+      <ion-title size="large">Histórico</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <div class="page-container">
+    <div class="list">
+
+      <!-- Iterar sobre as chaves do objeto groupedRemedies -->
+      <div class="item-container" *ngFor="let date of getKeys(groupedRemedies)">
+
+        <div class="date">
+          <hr>
+          <ion-label color="dark">{{ date | date: 'dd/MM/yyyy' }}</ion-label>
+          <hr>
+        </div>
+
+        <!-- Iterar sobre os remédios para cada data -->
+        <div *ngFor="let remedy of groupedRemedies[date], let i = index">
+
+          <ion-item button [ngClass]="i == groupedRemedies[date].length - 1 ? 'last-item' : 'item'">
+
+            <ion-grid>
+
+              <ion-row>
+                <ion-text>{{ remedy.name }}</ion-text> <br>
+              </ion-row>
+
+              <ion-row class="ion-justify-content-between">
+                <ion-label>{{ remedy.type }}</ion-label>
+                <ion-label>{{ remedy.startAt.getHours() }}:{{remedy.startAt.getMinutes()}}h</ion-label>
+              </ion-row>
+
+            </ion-grid>
+
+          </ion-item>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
 </ion-content>

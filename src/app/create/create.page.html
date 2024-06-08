@@ -1,0 +1,71 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Novo Medicamento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <div class="page-container">
+
+    <ion-list>
+
+      <!-- Nome do remédio -->
+      <ion-item>
+        <ion-input label="Nome do Medicamento" labelPlacement="floating" [(ngModel)]="name">
+        </ion-input>
+      </ion-item>
+
+      <!-- Tipo de medicamento -->
+      <ion-item>
+        <ion-select label="Tipo de Medicamento" okText="Confirmar" value="comprimido" cancelText="Cancelar"
+          [(ngModel)]="type">
+          <ion-select-option value="comprimido">Comprimido</ion-select-option>
+          <ion-select-option value="gotas">Gotas</ion-select-option>
+          <ion-select-option value="pomada">Pomada</ion-select-option>
+          <ion-select-option value="injeção">Injeção</ion-select-option>
+          <ion-select-option value="outro">Outro</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- Quantidade de comprimidos -->
+      <ion-item>
+        <ion-input label="Quantidade de Comprimidos" labelPlacement="floating" type="number" [(ngModel)]="quantity">
+        </ion-input>
+      </ion-item>
+
+      <!-- Intervalo -->
+      <ion-item>
+        <ion-input label="Intervalo (em horas)" labelPlacement="floating" type="number" [(ngModel)]="interval">
+        </ion-input>
+      </ion-item>
+
+      <!-- Horário inicial -->
+      <ion-item>
+        <ion-label>Início em:</ion-label>
+
+        <ion-datetime-button datetime="datetime" />
+
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime id="datetime" (ionChange)="setInitialTime($event)">
+
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+
+    </ion-list>
+
+    <div class="buttons">
+      <!-- Voltar para tela anterior -->
+      <ion-button color="light" routerLink="/tabs/tab1">Cancelar</ion-button>
+
+      <ion-button color="primary" (click)="createMedicine()">Salvar</ion-button>
+    </div>
+
+  </div>
+</ion-content>

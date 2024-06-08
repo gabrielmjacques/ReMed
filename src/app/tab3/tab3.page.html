@@ -1,17 +1,29 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 3
+      Ajustes
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="page-container">
+    <div class="options">
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+      <ion-item>
+        <ion-label>Modo escuro</ion-label>
+        <ion-toggle slot="end" [(ngModel)]="isDarkMode" (ionChange)="toggleDarkMode()"></ion-toggle>
+      </ion-item>
+
+      <ion-item button (click)="clearData()">
+        <ion-label color="danger" class="ion-text-center">Excluir Dados</ion-label>
+      </ion-item>
+
+    </div>
+
+    <div class="about ion-text-center ion-padding">
+      <ion-text color="medium">© 2024 ReMed, Inc.</ion-text> <br>
+      <ion-text color="medium">Edson | Yuri</ion-text>
+    </div>
+  </div>
 </ion-content>

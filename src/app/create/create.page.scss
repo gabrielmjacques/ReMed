@@ -1,0 +1,23 @@
+.page-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+
+    ion-input {
+        --highlight-color: var(--ion-color-primary);
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: space-between;
+
+        ion-button {
+            width: 100%;
+            margin: 0;
+            --border-radius: 0;
+            --padding-top: 20px;
+            --padding-bottom: 20px;
+        }
+    }
+}
