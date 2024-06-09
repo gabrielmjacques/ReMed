@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { Observable } from 'rxjs';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RemedyService {
+  storage!: Storage;
   private key = 'remedies';
 
   // Injeta o serviço de armazenamento
-  constructor(private storage: Storage) {
+  constructor(private storageService: StorageService) {
     this.init();
   }
 
-  // Inicializa o serviço de armazenamento
   async init() {
-    await this.storage.create();
+    this.storage = await this.storageService.get();
   }
 
   /**

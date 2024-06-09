@@ -1,17 +1,25 @@
+import { LocalNotificationSchema } from "@capacitor/local-notifications";
+
 export class Remedy {
+    id: number;
     name: string = '';
     type: string;
-    quantity: number = 0;
+    doses: number = 0;
     interval: number = 0;
     startAt: Date;
-    confirmedDates: Date[];  // Adicionando esta propriedade
+    days: number = 0;
+    confirmedDates: Date[];
+    notifications: LocalNotificationSchema[] = [];
 
-    constructor(name: string, type: string, quantity: number, interval: number, startAt: Date) {
+    constructor(name: string, type: string, doses: number, interval: number, startAt: Date, days: number) {
+        this.id = Math.floor(Math.random() * 9999) + 1;
+
         this.name = name;
         this.type = type;
-        this.quantity = quantity;
+        this.doses = doses;
         this.interval = interval;
         this.startAt = startAt;
+        this.days = days;
         this.confirmedDates = [];
     }
 }

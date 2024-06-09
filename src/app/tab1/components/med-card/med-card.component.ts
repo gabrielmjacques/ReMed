@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { LocalNotifications } from '@capacitor/local-notifications';
+import { Remedy } from 'src/app/models/remedy';
 
 @Component({
   selector: 'app-med-card',
@@ -6,13 +8,10 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./med-card.component.scss'],
 })
 export class MedCardComponent implements OnInit {
-  @Input() name: string = 'Medicamento';
-  @Input() type: string = 'Comprimido';
-  @Input() quantity: number = 0;
+  @Input() remedy!: Remedy;
   @Input() animationDelay: number = 0;
 
   constructor() { }
 
   ngOnInit() { }
-
 }

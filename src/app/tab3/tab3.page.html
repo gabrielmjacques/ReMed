@@ -11,14 +11,24 @@
     <div class="options">
 
       <ion-item>
-        <ion-label>Modo escuro</ion-label>
+        <ion-label id="darkMode">Modo escuro</ion-label>
         <ion-toggle slot="end" [(ngModel)]="isDarkMode" (ionChange)="toggleDarkMode()"></ion-toggle>
       </ion-item>
 
-      <ion-item button (click)="clearData()">
-        <ion-label color="danger" class="ion-text-center">Excluir Dados</ion-label>
+      <ion-item button (click)="clearRemedies()">
+        <ion-label color="danger" class="ion-text-center">Excluir Todos os Remédios</ion-label>
       </ion-item>
 
+      <ion-item button (click)="clearAllData()">
+        <ion-label color="danger" class="ion-text-center">Excluir Todos os Dados</ion-label>
+      </ion-item>
+
+      <ion-list>
+        <ion-item *ngFor="let not of notifications">
+          <ion-label>{{ not.title }}</ion-label>
+          <ion-label>{{ not.schedule?.at }}</ion-label>
+        </ion-item>
+      </ion-list>
     </div>
 
     <div class="about ion-text-center ion-padding">
