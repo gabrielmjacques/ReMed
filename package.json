@@ -4,7 +4,8 @@
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
   "scripts": {
-    "ionic-run": "ionic cap run android -l",
+    "project-android": "ionic cap run android -l --external",
+    "ionic-build": "ionic cap build android && ionic cap open android",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",

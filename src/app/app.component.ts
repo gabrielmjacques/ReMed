@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LocalNotificationsService } from './services/local-notifications.service';
 
 @Component({
   selector: 'app-root',
@@ -6,10 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() { this.initializeApp(); }
+  constructor(private localNotificationsService: LocalNotificationsService) { this.initializeApp(); }
 
   initializeApp() {
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    document.documentElement.classList.toggle('ion-palette-dark', prefersDark.matches);
+    this.localNotificationsService.initLocalNotifications();
   }
 }

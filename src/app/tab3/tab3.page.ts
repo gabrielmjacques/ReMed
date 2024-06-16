@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LocalNotifications, PendingLocalNotificationSchema } from '@capacitor/local-notifications';
+import { PendingLocalNotificationSchema } from '@capacitor/local-notifications';
 import { AlertController } from '@ionic/angular';
 import { RemedyService } from '../services/remedy.service';
 import { StorageService } from '../services/storage.service';
@@ -10,7 +10,7 @@ import { LocalNotificationsService } from '../services/local-notifications.servi
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss']
 })
-export class Tab3Page implements OnInit {
+export class Tab3Page {
   notifications!: PendingLocalNotificationSchema[];
   isDarkMode: boolean = false;
 
@@ -20,34 +20,6 @@ export class Tab3Page implements OnInit {
     private storageService: StorageService,
     private localNotificationsService: LocalNotificationsService
   ) { }
-
-  async ngOnInit() {
-    this.checkDarkMode();
-  }
-
-  ionViewWillEnter() {
-    this.getPendingNotifications();
-  }
-
-  async getPendingNotifications() {
-    const pending = await LocalNotifications.getPending();
-    this.notifications = pending.notifications;
-  }
-
-  /**
-   * Checa se o sistema está em modo escuro
-   */
-  checkDarkMode() {
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    this.isDarkMode = prefersDark.matches;
-  }
-
-  /**
-   * Alterna entre os modos claro e escuro
-   */
-  toggleDarkMode() {
-    document.documentElement.classList.toggle('ion-palette-dark', this.isDarkMode);
-  }
 
   /**
    * Limpa todos os remédios cadastrados
@@ -70,7 +42,6 @@ export class Tab3Page implements OnInit {
           handler: async () => {
             await this.remedyService.removeAll();
             await this.localNotificationsService.removeAll();
-            await this.getPendingNotifications();
           }
         }
       ]
@@ -99,7 +70,6 @@ export class Tab3Page implements OnInit {
             await this.storageService.clear();
             await this.remedyService.removeAll();
             await this.localNotificationsService.removeAll();
-            await this.getPendingNotifications();
           }
         }
       ]

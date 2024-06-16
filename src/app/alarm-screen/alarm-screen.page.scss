@@ -1,0 +1,108 @@
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-image: linear-gradient(120deg, #000, rgb(var(--ion-color-primary-rgb), 10%));
+
+    padding: 120px 40px;
+    height: 100%;
+
+    .info {
+        color: #fff;
+        text-align: center;
+
+        opacity: 0;
+
+        animation: fade-in forwards 1s 0.5s ease;
+
+        h1 {
+            font-weight: bold;
+
+            font-size: 3rem;
+        }
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        gap: 20px;
+
+        .main {
+            display: flex;
+            justify-content: space-between;
+
+            width: 100%;
+            opacity: 0;
+
+            animation: fade-in forwards 1s 0.8s ease;
+
+            ion-button {
+                --border-color: #ffffff67;
+                --border-width: 1px;
+
+                width: 90px;
+                height: 90px;
+                --border-radius: 100%;
+                border-radius: 100%;
+
+                outline: 1px solid #fff;
+                animation: oultine-pulse 1s infinite ease-in,
+                    pulse 1s infinite ease-in-out;
+
+                @keyframes oultine-pulse {
+                    0% {
+                        outline-offset: 0;
+                        outline: 1px solid #ffffff66;
+                    }
+
+                    100% {
+                        outline-offset: 10px;
+                        outline: 1px solid #ffffff00;
+                    }
+                }
+
+                @keyframes pulse {
+                    0% {
+                        transform: scale(1);
+                    }
+
+                    50% {
+                        transform: scale(1.02);
+                    }
+
+                    100% {
+                        transform: scale(1);
+                    }
+                }
+
+                &:first-child {
+                    --background: #ba2e2e;
+                }
+
+                ion-icon {
+                    width: 50%;
+                }
+            }
+        }
+
+        .snooze {
+            --backgroud: transparent;
+        }
+    }
+
+    @keyframes fade-in {
+        from {
+            transform: translateY(10px);
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0px);
+        }
+    }
+}

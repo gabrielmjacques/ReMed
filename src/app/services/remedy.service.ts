@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { Observable } from 'rxjs';
 import { StorageService } from './storage.service';
+import { Remedy } from '../models/remedy';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class RemedyService {
     this.init();
   }
 
+  // Inicializa o armazenamento
   async init() {
     this.storage = await this.storageService.get();
   }
@@ -37,11 +39,18 @@ export class RemedyService {
     await this.set(items);
   }
 
+  async update(remedy: Remedy): Promise<void> {
+    let items = await this.getAll() || [];
+    let index = items.findIndex(r => r.id == remedy.id);
+    items[index] = remedy;
+    await this.set(items);
+  }
+
   /**
    * Obtém a lista de remédios do armazenamento
    * @returns Lista de remédios
    */
-  async getAll(): Promise<any> {
+  async getAll(): Promise<Remedy[]> {
     return await this.storage.get(this.key);
   }
 
@@ -50,5 +59,13 @@ export class RemedyService {
    */
   async removeAll(): Promise<void> {
     await this.storage.remove(this.key);
+  }
+
+  /**
+   * Pega um remédio pelo id
+   */
+  async getById(id: number): Promise<Remedy | undefined> {
+    const all = await this.getAll();
+    return all.find(remedy => remedy.id == id);
   }
 }

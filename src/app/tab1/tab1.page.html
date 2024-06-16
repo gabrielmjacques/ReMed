@@ -24,8 +24,10 @@
     </ion-text>
   </div>
 
+  <ion-button (click)="abrirAlarme(3883, 4194.43521470972)">Alarme</ion-button>
+
   <ion-fab slot="fixed" horizontal="end" vertical="bottom"
-    class="addFab {{ remedies.length > 0 ? '' : 'outlinePulse' }}">
+    class="add-fab {{ remedies.length > 0 ? '' : 'outline-pulse' }}">
     <ion-fab-button routerLink="/tabs/create">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>

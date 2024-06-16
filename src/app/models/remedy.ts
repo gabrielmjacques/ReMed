@@ -8,7 +8,6 @@ export class Remedy {
     interval: number = 0;
     startAt: Date;
     days: number = 0;
-    confirmedDates: Date[];
     notifications: LocalNotificationSchema[] = [];
 
     constructor(name: string, type: string, doses: number, interval: number, startAt: Date, days: number) {
@@ -20,6 +19,5 @@ export class Remedy {
         this.interval = interval;
         this.startAt = startAt;
         this.days = days;
-        this.confirmedDates = [];
     }
 }

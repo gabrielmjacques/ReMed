@@ -6,6 +6,7 @@ import { AlertController } from '@ionic/angular';
 import { AndroidSettings, IOSSettings, NativeSettings } from 'capacitor-native-settings';
 import { PrefsService } from '../services/prefs.service';
 import { LocalNotificationsService } from '../services/local-notifications.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab1',
@@ -21,7 +22,7 @@ export class Tab1Page implements OnInit {
     private remedyService: RemedyService,
     private prefsService: PrefsService,
     private alertCtrl: AlertController,
-    private localNotificationsService: LocalNotificationsService
+    private router: Router
   ) { }
 
   // Método chamado quando a página é carregada
@@ -41,7 +42,7 @@ export class Tab1Page implements OnInit {
    */
   firstAlert() {
     this.alertCtrl.create({
-      header: 'Bem-vindo ao Remedy!',
+      header: 'Bem-vindo ao ReMed!',
       mode: 'ios',
       backdropDismiss: false,
       translucent: true,
@@ -98,6 +99,9 @@ export class Tab1Page implements OnInit {
     }).then(alert => alert.present());
   }
 
+  /**
+   * Exibe um alerta para finalizar a introdução
+   */
   thirdAlert() {
     this.alertCtrl.create({
       header: 'E agora?',
@@ -109,12 +113,21 @@ export class Tab1Page implements OnInit {
     }).then(alert => alert.present());
   }
 
+  /**
+   * Exibe a introdução ao usuário
+   */
   async showIntroduction() {
     this.firstAlert();
   }
 
+  /**
+   * Carrega os remédios do Storage
+   */
   loadRemedies() {
     this.remedyService.getAll().then(remedies => this.remedies = remedies || []);
   }
 
+  abrirAlarme(remedyId: number, notificationId: number) {
+    this.router.navigateByUrl(`alarm-screen/${remedyId}/${notificationId}`);
+  }
 }

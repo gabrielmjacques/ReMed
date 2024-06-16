@@ -88,7 +88,7 @@ export class CreatePage {
     if (!this.isDataValid())
       return;
 
-    const remedy = new Remedy(this.captalizeWords(this.name!), this.type, this.doses!, this.interval!, this.startAt, this.days);
+    const remedy = new Remedy(this.captalizeWords(this.name!), this.captalizeWords(this.type), this.doses!, this.interval!, this.startAt, this.days);
 
     // Adiciona o remédio ao serviço
     this.remedyService.push(remedy);

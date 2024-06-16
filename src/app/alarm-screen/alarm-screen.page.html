@@ -1,0 +1,30 @@
+<ion-content [fullscreen]="true">
+
+  <div class="page-container">
+
+    <div class="info">
+      <h1>{{ remedy?.name! }}</h1>
+
+      <span>
+        Tome {{ remedy?.doses }} {{ remedy?.type | titlecase }}/s
+      </span>
+    </div>
+
+    <div class="buttons">
+      <div class="main">
+        <ion-button (click)="reject()">
+          <ion-icon size="large" name="close"></ion-icon>
+        </ion-button>
+
+        <ion-button (click)="accept()">
+          <ion-icon size="large" name="checkmark"></ion-icon>
+        </ion-button>
+      </div>
+
+      <ion-button fill="clear" class="snooze" (click)="snooze()">
+        Lembre-me daqui a 5 minutos
+      </ion-button>
+    </div>
+
+  </div>
+</ion-content>
