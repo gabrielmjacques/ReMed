@@ -17,6 +17,17 @@
       <ion-item button (click)="clearAllData()">
         <ion-label color="danger" class="ion-text-center">Excluir Todos os Dados</ion-label>
       </ion-item>
+
+      <ion-list>
+        <ion-item>
+          Apenas para ver as notificações agendadas
+        </ion-item>
+
+        <ion-item *ngFor="let not of notifications">
+          <ion-label>{{ not.title }}</ion-label>
+          <ion-label>{{ not.schedule?.at }}</ion-label>
+        </ion-item>
+      </ion-list>
     </div>
 
     <div class="about ion-text-center ion-padding">

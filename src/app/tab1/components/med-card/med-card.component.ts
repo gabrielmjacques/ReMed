@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { LocalNotifications } from '@capacitor/local-notifications';
+import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { Remedy } from 'src/app/models/remedy';
 
 @Component({
@@ -7,11 +7,13 @@ import { Remedy } from 'src/app/models/remedy';
   templateUrl: './med-card.component.html',
   styleUrls: ['./med-card.component.scss'],
 })
-export class MedCardComponent implements OnInit {
+export class MedCardComponent {
   @Input() remedy!: Remedy;
   @Input() animationDelay: number = 0;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
-  ngOnInit() { }
+  editRemedy() {
+    this.router.navigateByUrl(`edit/${this.remedy.id}`);
+  }
 }

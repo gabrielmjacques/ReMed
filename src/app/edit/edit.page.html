@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
     </ion-buttons>
-    <ion-title>Novo Medicamento</ion-title>
+    <ion-title>Editar Medicamento</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -36,36 +36,15 @@
         </ion-input>
       </ion-item>
 
-      <!-- Dias -->
-      <ion-item>
-        <ion-input label="Por quantos dias?" labelPlacement="floating" type="number" [(ngModel)]="days">
-        </ion-input>
-      </ion-item>
-
-      <!-- Intervalo -->
-      <ion-item>
-        <ion-input label="Intervalo (em horas)" labelPlacement="floating" type="number" [(ngModel)]="interval">
-        </ion-input>
-      </ion-item>
-
-      <!-- Horário inicial -->
-      <ion-item>
-        <ion-label>Início em:</ion-label>
-
-        <ion-datetime-button datetime="datetime" />
-
-        <ion-modal [keepContentsMounted]="true">
-          <ng-template>
-            <ion-datetime id="datetime" (ionChange)="setInitialTime($event)">
-            </ion-datetime>
-          </ng-template>
-        </ion-modal>
-      </ion-item>
     </ion-list>
 
     <div class="buttons">
-      <ion-button color="light" routerLink="/tabs/tab1">Cancelar</ion-button>
-      <ion-button color="primary" (click)="createMedicine()">Salvar</ion-button>
+      <ion-button color="danger" fill="clear" (click)="deleteMedicine()">Excluir</ion-button>
+
+      <div class="main">
+        <ion-button color="light" routerLink="/tabs/tab1">Cancelar</ion-button>
+        <ion-button color="primary" (click)="updateMedicine()">Salvar</ion-button>
+      </div>
     </div>
 
   </div>

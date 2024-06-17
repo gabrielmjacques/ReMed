@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PendingLocalNotificationSchema } from '@capacitor/local-notifications';
+import { LocalNotifications, PendingLocalNotificationSchema } from '@capacitor/local-notifications';
 import { AlertController } from '@ionic/angular';
 import { RemedyService } from '../services/remedy.service';
 import { StorageService } from '../services/storage.service';
@@ -18,8 +18,12 @@ export class Tab3Page {
     private alertCtrl: AlertController,
     private remedyService: RemedyService,
     private storageService: StorageService,
-    private localNotificationsService: LocalNotificationsService
-  ) { }
+  ) {
+  }
+
+  ionViewWillEnter() {
+    LocalNotifications.getPending().then(notifications => this.notifications = notifications.notifications);
+  }
 
   /**
    * Limpa todos os remédios cadastrados
@@ -41,7 +45,6 @@ export class Tab3Page {
           cssClass: 'alert',
           handler: async () => {
             await this.remedyService.removeAll();
-            await this.localNotificationsService.removeAll();
           }
         }
       ]
@@ -69,11 +72,12 @@ export class Tab3Page {
           handler: async () => {
             await this.storageService.clear();
             await this.remedyService.removeAll();
-            await this.localNotificationsService.removeAll();
           }
         }
       ]
     }).then(alert => alert.present());
   }
+
+
 
 }

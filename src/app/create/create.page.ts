@@ -1,9 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Remedy } from '../models/remedy';
+import { Component } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
-import { RemedyService } from '../services/remedy.service';
-import { LocalNotifications } from '@capacitor/local-notifications';
+import { Remedy } from '../models/remedy';
 import { LocalNotificationsService } from '../services/local-notifications.service';
+import { RemedyService } from '../services/remedy.service';
 
 @Component({
   selector: 'app-create',
@@ -12,7 +11,7 @@ import { LocalNotificationsService } from '../services/local-notifications.servi
 })
 export class CreatePage {
   public name: string | undefined;
-  public type: string = 'comprimido';
+  public type: string = 'Comprimido';
   public doses: number | undefined;
   public interval: number | undefined;
 
@@ -88,13 +87,10 @@ export class CreatePage {
     if (!this.isDataValid())
       return;
 
-    const remedy = new Remedy(this.captalizeWords(this.name!), this.captalizeWords(this.type), this.doses!, this.interval!, this.startAt, this.days);
+    const remedy = new Remedy(this.captalizeWords(this.name!), this.type, this.doses!, this.interval!, this.startAt, this.days);
 
     // Adiciona o remédio ao serviço
     this.remedyService.push(remedy);
-
-    // Create alarm
-    this.localNotifications.setByRemedy(remedy);
 
     // Exibe um alerta de sucesso
     this.alertCtrl.create({

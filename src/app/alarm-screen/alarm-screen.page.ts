@@ -35,8 +35,8 @@ export class AlarmScreenPage implements OnInit {
   }
 
   removeCurrentNotification() {
-    const updatedNotifications = this.remedy!.notifications.filter(notification => notification.id != this.notification!.id);
-    this.remedy!.notifications = updatedNotifications;
+    const notifications = this.remedy!.notifications.filter(notification => notification.id != this.notification!.id);
+    this.remedy!.notifications = notifications;
 
     this.remedyService.update(this.remedy!);
   }

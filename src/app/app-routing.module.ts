@@ -9,7 +9,15 @@ const routes: Routes = [
   {
     path: 'alarm-screen/:remedyid/:notificationid',
     loadChildren: () => import('./alarm-screen/alarm-screen.module').then(m => m.AlarmScreenPageModule)
-  }
+  },
+  {
+    path: 'edit/:id',
+    loadChildren: () => import('./edit/edit.module').then(m => m.EditPageModule)
+  },
+  {
+    path: 'create',
+    loadChildren: () => import('./create/create.module').then(m => m.CreatePageModule)
+  },
 ];
 @NgModule({
   imports: [

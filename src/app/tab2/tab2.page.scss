@@ -53,3 +53,19 @@
 
     }
 }
+
+.no-remedy {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 80%;
+    padding: 0 20px;
+
+    h1 {
+        font-weight: bold;
+
+        font-size: 2em;
+        opacity: 0.5;
+    }
+}

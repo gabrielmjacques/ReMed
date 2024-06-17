@@ -15,7 +15,6 @@
 
   <div *ngFor="let remedy of remedies, let i = index">
     <app-med-card [remedy]="remedy" [animationDelay]="i/15" />
-    <p style="text-align: center;">{{ remedy.id }}</p>
   </div>
 
   <div *ngIf="remedies.length == 0" class="no-remedy">
@@ -24,11 +23,9 @@
     </ion-text>
   </div>
 
-  <ion-button (click)="abrirAlarme(3883, 4194.43521470972)">Alarme</ion-button>
-
   <ion-fab slot="fixed" horizontal="end" vertical="bottom"
     class="add-fab {{ remedies.length > 0 ? '' : 'outline-pulse' }}">
-    <ion-fab-button routerLink="/tabs/create">
+    <ion-fab-button routerLink="/create">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

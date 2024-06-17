@@ -93,4 +93,20 @@ export class LocalNotificationsService {
     const notifications = await LocalNotifications.getPending();
     await LocalNotifications.cancel(notifications);
   }
+
+  /**
+   * Remove todas as notificações de um remédio
+   * @param remedy Remédio a ser removido
+   */
+  async removeByRemedy(remedy: Remedy) {
+    const notifications = await LocalNotifications.getPending();
+
+    // Filtra as notificações do remédio
+    const filteredNotifications = notifications.notifications.filter(notification => {
+      return notification.extra.remedyId == remedy.id;
+    });
+
+    // Cancela as notificações do remédio
+    await LocalNotifications.cancel({ notifications: filteredNotifications });
+  }
 }

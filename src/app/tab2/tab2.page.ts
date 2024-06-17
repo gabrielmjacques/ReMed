@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Remedy } from '../models/remedy';
 import { RemedyService } from '../services/remedy.service';
 import { LocalNotificationSchema } from '@capacitor/local-notifications';
@@ -21,13 +21,11 @@ export class Tab2Page {
   remedies: Remedy[] = [];
   groupedNotifications: IGroupedNotifications = {};
 
-  constructor(private remedyService: RemedyService) { }
-
-  async ionViewWillEnter() {
-    const remedies = await this.remedyService.getAll();
-    this.remedies = remedies;
-
-    this.groupNotificationsByDate();
+  constructor(private remedyService: RemedyService) {
+    this.remedyService.remedies$.subscribe(remedies => {
+      this.remedies = remedies;
+      this.groupNotificationsByDate();
+    });
   }
 
   /**
@@ -80,6 +78,7 @@ export class Tab2Page {
     return Object.keys(obj).sort((a, b) => a > b ? 1 : -1);
   }
 
+  // Formata a hora da notificação
   formatTime(date: Date): string {
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');

@@ -21,20 +21,14 @@ export class Tab1Page implements OnInit {
   constructor(
     private remedyService: RemedyService,
     private prefsService: PrefsService,
-    private alertCtrl: AlertController,
-    private router: Router
-  ) { }
+    private alertCtrl: AlertController
+  ) {
+    this.remedyService.remedies$.subscribe(remedies => this.remedies = remedies);
+  }
 
   // Método chamado quando a página é carregada
   async ngOnInit() {
-    this.loadRemedies();
-
     this.prefsService.getPref('isIntroductionDone').then(isDone => isDone ? null : this.showIntroduction());
-  }
-
-  // Método chamado toda vez que a página é exibida
-  ionViewWillEnter() {
-    this.loadRemedies();
   }
 
   /**
@@ -118,16 +112,5 @@ export class Tab1Page implements OnInit {
    */
   async showIntroduction() {
     this.firstAlert();
-  }
-
-  /**
-   * Carrega os remédios do Storage
-   */
-  loadRemedies() {
-    this.remedyService.getAll().then(remedies => this.remedies = remedies || []);
-  }
-
-  abrirAlarme(remedyId: number, notificationId: number) {
-    this.router.navigateByUrl(`alarm-screen/${remedyId}/${notificationId}`);
   }
 }
