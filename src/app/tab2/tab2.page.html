@@ -29,7 +29,8 @@
         <!-- Iterar sobre os remédios para cada data -->
         <div *ngFor="let group of groupedNotifications[date], let i = index">
 
-          <ion-item button [ngClass]="i == groupedNotifications[date].length - 1 ? 'last-item' : 'item'">
+          <ion-item button (click)="open(group.remedy.id, group.notification.id)"
+            [ngClass]="i == groupedNotifications[date].length - 1 ? 'last-item' : 'item'">
             <ion-grid>
 
               <ion-row>
@@ -53,7 +54,7 @@
 
   </div>
 
-  <div *ngIf="remedies.length == 0" class="no-remedy">
+  <div *ngIf="isGroupedNotificationsEmpty" class="no-remedy">
     <ion-text color="medium" class="ion-text-center">
       <h1>Você verá as próximas notificações aqui</h1>
     </ion-text>

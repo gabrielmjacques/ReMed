@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { LocalNotificationSchema, LocalNotifications } from '@capacitor/local-notifications';
 import { Remedy } from '../models/remedy';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalNotificationsService {
-  private REMEDY_CHANNEL_ID = 'remedy';
+  REMEDY_CHANNEL_ID = 'remedy';
 
   constructor(private router: Router) {
     this.initLocalNotifications();
@@ -34,8 +35,8 @@ export class LocalNotificationsService {
    * Agendamento de notificações locais
    * @param notifications Array de notificações a serem agendadas
    */
-  set(notifications: LocalNotificationSchema[]) {
-    LocalNotifications.schedule({
+  async set(notifications: LocalNotificationSchema[]) {
+    await LocalNotifications.schedule({
       notifications: notifications
     });
   }
@@ -44,7 +45,7 @@ export class LocalNotificationsService {
    * Agendamento de notificações locais a partir de um remédio
    * @param remedy Remédio a ser agendado
    */
-  setByRemedy(remedy: Remedy) {
+  async setByRemedy(remedy: Remedy) {
     // Objeto de notificações
     let notifications: LocalNotificationSchema[] = [];
 
@@ -79,11 +80,10 @@ export class LocalNotificationsService {
       currentDate.setHours(currentDate.getHours() + remedy.interval);
     }
 
-    // Adiciona as notificações ao objeto de remédio
-    remedy.notifications = notifications;
-
     // Agendamento das notificações
-    this.set(notifications);
+    await this.set(notifications);
+
+    return notifications;
   }
 
   /**
@@ -99,7 +99,7 @@ export class LocalNotificationsService {
    * @param remedy Remédio a ser removido
    */
   async removeByRemedy(remedy: Remedy) {
-    const notifications = await LocalNotifications.getPending();
+    let notifications = await LocalNotifications.getPending();
 
     // Filtra as notificações do remédio
     const filteredNotifications = notifications.notifications.filter(notification => {
@@ -108,5 +108,8 @@ export class LocalNotificationsService {
 
     // Cancela as notificações do remédio
     await LocalNotifications.cancel({ notifications: filteredNotifications });
+
+    notifications = await LocalNotifications.getPending();
+
   }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Remedy } from '../models/remedy';
 import { RemedyService } from '../services/remedy.service';
 import { LocalNotificationSchema } from '@capacitor/local-notifications';
+import { NavController } from '@ionic/angular';
 
 interface IGroupedNotifications {
   [key: string]: {
@@ -18,25 +19,25 @@ interface IGroupedNotifications {
 export class Tab2Page {
   today: string = new Date().toISOString().split('T')[0];
 
-  remedies: Remedy[] = [];
+  isGroupedNotificationsEmpty = true;
   groupedNotifications: IGroupedNotifications = {};
 
-  constructor(private remedyService: RemedyService) {
+  constructor(private remedyService: RemedyService, private navCtrl: NavController) {
     this.remedyService.remedies$.subscribe(remedies => {
-      this.remedies = remedies;
-      this.groupNotificationsByDate();
+      this.isGroupedNotificationsEmpty = remedies.length === 0;
+      this.groupNotificationsByDate(remedies);
     });
   }
 
   /**
    * Agrupa os remédios por data e ordena os remédios por data crescente
    */
-  groupNotificationsByDate() {
+  groupNotificationsByDate(remedies: Remedy[]) {
     // Reseta o objeto de notificações agrupadas
     this.groupedNotifications = {};
 
     // Itera sobre todos os remédios
-    this.remedies.forEach(remedy => {
+    remedies.forEach(remedy => {
       // Itera sobre todas as notificações de um remédio
       remedy.notifications.forEach(notification => {
         // Pega a data da notificação
@@ -83,5 +84,9 @@ export class Tab2Page {
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
     return `${hours}:${minutes}h`;
+  }
+
+  open(remedyID: number, notificationID: number) {
+    this.navCtrl.navigateForward(`alarm-screen/${remedyID}/${notificationID}`);
   }
 }

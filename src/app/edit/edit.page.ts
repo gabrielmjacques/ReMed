@@ -90,6 +90,7 @@ export class EditPage implements OnInit {
     this.alertCtrl.create({
       mode: 'ios',
       translucent: true,
+      backdropDismiss: false,
       header: 'Confirmação',
       subHeader: 'Deseja realmente apagar este remédio?',
       message: 'Essa ação não pode ser desfeita!',

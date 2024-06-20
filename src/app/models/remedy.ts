@@ -1,7 +1,7 @@
 import { LocalNotificationSchema } from "@capacitor/local-notifications";
 
 export class Remedy {
-    id: number;
+    id!: number;
     name: string = '';
     type: string;
     doses: number = 0;
@@ -10,8 +10,11 @@ export class Remedy {
     days: number = 0;
     notifications: LocalNotificationSchema[] = [];
 
-    constructor(name: string, type: string, doses: number, interval: number, startAt: Date, days: number) {
-        this.id = Math.floor(Math.random() * 9999) + 1;
+    constructor(name: string, type: string, doses: number, interval: number, startAt: Date, days: number, id?: number) {
+        if (!id)
+            this.id = Math.floor(Math.random() * 9999) + 1;
+        else
+            this.id = id;
 
         this.name = name;
         this.type = type;

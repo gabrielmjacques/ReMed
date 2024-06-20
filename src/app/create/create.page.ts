@@ -12,7 +12,7 @@ import { RemedyService } from '../services/remedy.service';
 export class CreatePage {
   public name: string | undefined;
   public type: string = 'Comprimido';
-  public doses: number | undefined;
+  public doses: number = 1;
   public interval: number | undefined;
 
   public startAt: Date = new Date();
@@ -21,8 +21,7 @@ export class CreatePage {
   constructor(
     private navCtrl: NavController,
     private alertCtrl: AlertController,
-    private remedyService: RemedyService,
-    private localNotifications: LocalNotificationsService
+    private remedyService: RemedyService
   ) { }
 
   /**
@@ -30,7 +29,7 @@ export class CreatePage {
    */
   resetForm() {
     this.name = '';
-    this.doses = undefined;
+    this.doses = 1;
     this.interval = undefined;
     this.startAt = new Date();
     this.days = 1;
@@ -49,9 +48,6 @@ export class CreatePage {
       alert("Quantidade e intervalo devem ser maiores que 0");
       return false;
 
-    } else if (this.startAt < new Date()) {
-      alert("Data de início deve ser maior que a data atual");
-      return false;
     }
 
     return true;

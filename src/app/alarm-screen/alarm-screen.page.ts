@@ -27,10 +27,11 @@ export class AlarmScreenPage implements OnInit {
       const remedyId = params['remedyid'];
       const notificationId = params['notificationid'];
 
-      this.remedyService.getById(remedyId).then(remedy => {
-        this.remedy = remedy;
-        this.notification = remedy?.notifications.find(notification => notification.id == notificationId);
+      this.remedyService.remedies$.subscribe(remedies => {
+        this.remedy = remedies.find(remedy => remedy.id == remedyId);
+        this.notification = this.remedy!.notifications.find(notification => notification.id == notificationId);
       });
+
     });
   }
 
@@ -54,18 +55,41 @@ export class AlarmScreenPage implements OnInit {
   }
 
   snooze() {
-    this.removeCurrentNotification();
+    const minutes = 5;
 
-    // Criando uma nova notificação com 5 minutos de diferença
-    this.notification!.schedule = { at: new Date(Date.now() + 60000 * 5) };
+    // Criando uma nova notificação com ${minutes} minutos de diferença
+    let newNotification: LocalNotificationSchema = {
+      id: this.remedy!.id + Math.random() * 1000,
+      channelId: this.localNotificationsService.REMEDY_CHANNEL_ID,
+      actionTypeId: 'remedy_notification',
+      title: `Hora do Remédio`,
+      body: `Você deve tomar ${this.remedy!.doses} dose/s do medicamento ${this.remedy!.name} - ${this.remedy!.type}`,
+      schedule: {
+        at: new Date(Date.now() + minutes * 60 * 1000),
+        allowWhileIdle: true
+      },
+      extra: {
+        remedyId: this.remedy!.id
+      }
+    };
 
-    // Agendando a notificação
-    this.localNotificationsService.set([this.notification!]);
+    let newRemedy = new Remedy(
+      this.remedy!.name,
+      this.remedy!.type,
+      this.remedy!.doses,
+      this.remedy!.interval,
+      this.remedy!.startAt,
+      this.remedy!.days,
+      this.remedy!.id
+    );
+
+    this.remedy!.notifications.shift();
+    newRemedy.notifications = this.remedy?.notifications!;
+    newRemedy.notifications.unshift(newNotification);
+
+    this.remedyService.update(newRemedy);
+
     this.router.navigateByUrl('tabs/tab1');
-
-    // Atualizando o remédio
-    this.remedy!.notifications.push(this.notification!);
-    this.remedyService.update(this.remedy!);
   }
 
 }

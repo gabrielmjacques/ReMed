@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Remedy } from '../models/remedy';
 import { LocalNotificationsService } from './local-notifications.service';
-import { StorageService } from './storage.service';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RemedyService {
-  storage!: Storage;
   private key = 'remedies';
 
   remediesSubject = new BehaviorSubject<Remedy[]>([]);
@@ -17,7 +15,7 @@ export class RemedyService {
 
   // Injeta o serviço de armazenamento
   constructor(
-    private storageService: StorageService,
+    private storage: Storage,
     private localNotificationsService: LocalNotificationsService
   ) {
     this.init();
@@ -25,7 +23,7 @@ export class RemedyService {
 
   // Inicializa o armazenamento
   async init() {
-    this.storage = await this.storageService.get();
+    await this.storage.create();
     this.remediesSubject.next(await this.getAll() || []);
   }
 
@@ -33,31 +31,37 @@ export class RemedyService {
    * Define a lista de remédios no armazenamento
    * @param remedyList Lista de remédios
    */
-  private async set(remedyList: any): Promise<void> {
-    await this.storage.set(this.key, remedyList);
-    this.remediesSubject.next(remedyList);
+  private async set(remedyList: Remedy[]): Promise<void> {
+    this.localNotificationsService.removeAll();
+
+    for (const remedy of remedyList) {
+      remedy.notifications = await this.localNotificationsService.setByRemedy(remedy);
+    }
+
+    await this.storage.set(this.key, remedyList); // Salva a lista de remédios no armazenamento
+    this.remediesSubject.next(remedyList); // Atualiza o BehaviorSubject
   }
 
   /**
    * Adiciona um remédio ao armazenamento (concatenando com os itens já existentes)
    * @param remedy Remédio a ser adicionado
    */
-  async push(remedy: any): Promise<void> {
-    let items = await this.getAll() || [];
-    items.push(remedy);
-    await this.set(items);
-    this.localNotificationsService.setByRemedy(remedy);
-
-    this.remediesSubject.next(items);
+  async push(remedy: Remedy): Promise<void> {
+    let remedies = await this.getAll() || [];
+    remedies.push(remedy);
+    await this.set(remedies);
   }
 
   async update(remedy: Remedy): Promise<void> {
-    let items = await this.getAll() || [];
-    let index = items.findIndex(r => r.id == remedy.id);
-    items[index] = remedy;
-    await this.set(items);
+    let remedies = await this.getAll() || [];
+    remedies = remedies.filter(rmd => rmd.id != remedy.id);
+    remedies.push(remedy);
 
-    this.remediesSubject.next(items);
+    await this.localNotificationsService.removeByRemedy(remedy);
+    await this.localNotificationsService.set(remedy.notifications);
+
+    await this.storage.set(this.key, remedies); // Salva a lista de remédios no armazenamento
+    this.remediesSubject.next(remedies); // Atualiza o BehaviorSubject
   }
 
   /**
@@ -82,15 +86,15 @@ export class RemedyService {
    * @param remedy Remédio a ser removido
    */
   async removeByRemedy(remedy: Remedy): Promise<void> {
-    let items = await this.getAll() || [];
-    let index = items.findIndex(r => r.id == remedy.id);
-    items.splice(index, 1);
-    await this.set(items);
+    let remedies = await this.getAll() || [];
+    let index = remedies.findIndex(r => r.id == remedy.id);
+    remedies.splice(index, 1);
+    await this.set(remedies);
 
     // Remove as notificações
     this.localNotificationsService.removeByRemedy(remedy);
 
-    this.remediesSubject.next(items);
+    this.remediesSubject.next(remedies);
   }
 
   /**
