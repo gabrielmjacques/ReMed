@@ -48,6 +48,9 @@ export class CreatePage {
       alert("Quantidade e intervalo devem ser maiores que 0");
       return false;
 
+    } else if (this.startAt < new Date()) {
+      alert("Data de início deve ser maior que a data atual");
+      return false;
     }
 
     return true;
@@ -78,7 +81,7 @@ export class CreatePage {
   /**
    * Cria um novo remédio
    */
-  createMedicine() {
+  async createMedicine() {
     // Verifica se os dados são válidos
     if (!this.isDataValid())
       return;
@@ -86,7 +89,7 @@ export class CreatePage {
     const remedy = new Remedy(this.captalizeWords(this.name!), this.type, this.doses!, this.interval!, this.startAt, this.days);
 
     // Adiciona o remédio ao serviço
-    this.remedyService.push(remedy);
+    await this.remedyService.push(remedy);
 
     // Exibe um alerta de sucesso
     this.alertCtrl.create({

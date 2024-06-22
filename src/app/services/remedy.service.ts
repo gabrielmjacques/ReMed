@@ -32,10 +32,8 @@ export class RemedyService {
    * @param remedyList Lista de remédios
    */
   private async set(remedyList: Remedy[]): Promise<void> {
-    this.localNotificationsService.removeAll();
-
     for (const remedy of remedyList) {
-      remedy.notifications = await this.localNotificationsService.setByRemedy(remedy);
+      await this.localNotificationsService.set(remedy.notifications);
     }
 
     await this.storage.set(this.key, remedyList); // Salva a lista de remédios no armazenamento
@@ -48,10 +46,17 @@ export class RemedyService {
    */
   async push(remedy: Remedy): Promise<void> {
     let remedies = await this.getAll() || [];
+
+    remedy.notifications = await this.localNotificationsService.calculateNotifications(remedy);
     remedies.push(remedy);
+
     await this.set(remedies);
   }
 
+  /**
+    * Atualiza um remédio no armazenamento
+   * @param remedy Remédio a ser atualizado
+   */
   async update(remedy: Remedy): Promise<void> {
     let remedies = await this.getAll() || [];
     remedies = remedies.filter(rmd => rmd.id != remedy.id);
@@ -87,14 +92,9 @@ export class RemedyService {
    */
   async removeByRemedy(remedy: Remedy): Promise<void> {
     let remedies = await this.getAll() || [];
-    let index = remedies.findIndex(r => r.id == remedy.id);
-    remedies.splice(index, 1);
-    await this.set(remedies);
-
-    // Remove as notificações
+    remedies = remedies.filter(rmd => rmd.id != remedy.id);
     this.localNotificationsService.removeByRemedy(remedy);
-
-    this.remediesSubject.next(remedies);
+    await this.set(remedies);
   }
 
   /**

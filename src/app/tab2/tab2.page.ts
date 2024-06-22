@@ -17,10 +17,11 @@ interface IGroupedNotifications {
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
-  today: string = new Date().toISOString().split('T')[0];
+  today: Date = new Date();
 
   isGroupedNotificationsEmpty = true;
   groupedNotifications: IGroupedNotifications = {};
+  pastGroupedNotifications: IGroupedNotifications = {};
 
   constructor(private remedyService: RemedyService, private navCtrl: NavController) {
     this.remedyService.remedies$.subscribe(remedies => {

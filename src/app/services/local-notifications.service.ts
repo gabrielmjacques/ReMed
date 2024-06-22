@@ -17,8 +17,8 @@ export class LocalNotificationsService {
   /**
    * Inicializa o canal de notificações e o listener para notificações
    */
-  initLocalNotifications() {
-    LocalNotifications.createChannel({
+  async initLocalNotifications() {
+    await LocalNotifications.createChannel({
       id: this.REMEDY_CHANNEL_ID,
       name: 'ReMed',
       description: 'Canal de notificações do ReMed',
@@ -26,7 +26,7 @@ export class LocalNotificationsService {
       vibration: true,
     });
 
-    LocalNotifications.addListener('localNotificationActionPerformed', (action) => {
+    await LocalNotifications.addListener('localNotificationActionPerformed', (action) => {
       this.router.navigateByUrl(`/alarm-screen/${action.notification.extra.remedyId}/${action.notification.id}`);
     });
   }
@@ -41,28 +41,20 @@ export class LocalNotificationsService {
     });
   }
 
-  /**
-   * Agendamento de notificações locais a partir de um remédio
-   * @param remedy Remédio a ser agendado
-   */
-  async setByRemedy(remedy: Remedy) {
-    // Objeto de notificações
-    let notifications: LocalNotificationSchema[] = [];
-
+  async calculateNotifications(remedy: Remedy) {
     let endAt = new Date(remedy.startAt);
     endAt.setDate(endAt.getDate() + remedy.days);
 
     let currentDate = new Date(remedy.startAt);
 
-    // Agendando as notificações de acordo com o intervalo até a data final (que é a data de início + dias definidos)
-    while (currentDate < endAt) {
+    let notifications: LocalNotificationSchema[] = [];
 
-      // Objeto de notificação
+    while (currentDate < endAt) {
       let notification: LocalNotificationSchema = {
         id: remedy.id + Math.random() * 1000,
         channelId: this.REMEDY_CHANNEL_ID,
         actionTypeId: 'remedy_notification',
-        title: `Hora do Remédio`,
+        title: `Hora do Remédio - ${remedy.name}`,
         body: `Você deve tomar ${remedy.doses} dose/s do medicamento ${remedy.name} - ${remedy.type}`,
         schedule: {
           at: new Date(currentDate),
@@ -73,15 +65,10 @@ export class LocalNotificationsService {
         }
       };
 
-      // Adiciona a notificação ao array de notificações
       notifications.push(notification);
 
-      // Adiciona o intervalo de horas
       currentDate.setHours(currentDate.getHours() + remedy.interval);
     }
-
-    // Agendamento das notificações
-    await this.set(notifications);
 
     return notifications;
   }

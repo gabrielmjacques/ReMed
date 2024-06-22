@@ -62,7 +62,7 @@ export class AlarmScreenPage implements OnInit {
       id: this.remedy!.id + Math.random() * 1000,
       channelId: this.localNotificationsService.REMEDY_CHANNEL_ID,
       actionTypeId: 'remedy_notification',
-      title: `Hora do Remédio`,
+      title: `Hora do Remédio - ${this.remedy!.name}`,
       body: `Você deve tomar ${this.remedy!.doses} dose/s do medicamento ${this.remedy!.name} - ${this.remedy!.type}`,
       schedule: {
         at: new Date(Date.now() + minutes * 60 * 1000),

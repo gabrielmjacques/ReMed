@@ -72,7 +72,7 @@ export class EditPage implements OnInit {
   /**
    * Cria um novo remédio
    */
-  updateMedicine() {
+  async updateMedicine() {
 
     if (!this.isDataValid()) return;
 
@@ -81,9 +81,8 @@ export class EditPage implements OnInit {
     remedy.type = this.type;
     remedy.doses = this.doses!;
 
-    this.remedyService.update(remedy).then(() => {
-      this.navCtrl.navigateBack('tabs/tab1');
-    });
+    await this.remedyService.update(remedy);
+    this.navCtrl.navigateBack('tabs/tab1');
   }
 
   deleteMedicine() {
