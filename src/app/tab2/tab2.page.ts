@@ -87,6 +87,12 @@ export class Tab2Page {
     return `${hours}:${minutes}h`;
   }
 
+  /**
+   * ! APENAS PARA TESTES !
+    * Abre a tela de alarme de um remédio
+   * @param remedyID ID do remédio
+   * @param notificationID ID da notificação
+   */
   open(remedyID: number, notificationID: number) {
     this.navCtrl.navigateForward(`alarm-screen/${remedyID}/${notificationID}`);
   }

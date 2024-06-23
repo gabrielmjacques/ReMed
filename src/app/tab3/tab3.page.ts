@@ -11,7 +11,10 @@ import { LocalNotificationsService } from '../services/local-notifications.servi
   styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page {
-  notifications!: PendingLocalNotificationSchema[];
+
+  // ! APENAS PARA TESTES !
+  // notifications!: PendingLocalNotificationSchema[];
+
   isDarkMode: boolean = false;
 
   constructor(
@@ -22,7 +25,9 @@ export class Tab3Page {
   }
 
   ionViewWillEnter() {
-    LocalNotifications.getPending().then(notifications => this.notifications = notifications.notifications);
+
+    // ! APENAS PARA TESTES !
+    // LocalNotifications.getPending().then(notifications => this.notifications = notifications.notifications);
   }
 
   /**
